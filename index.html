@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Modern To-Do List</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✅</text></svg>">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="js/app.js" as="script" type="module">
+    
+    <!-- Meta tags for SEO and social sharing -->
+    <meta name="description" content="TaskFlow - A modern, hierarchical to-do list application for organizing your tasks efficiently">
+    <meta name="keywords" content="todo, task management, productivity, organization">
+    <meta name="author" content="TaskFlow">
+    
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="TaskFlow - Modern To-Do List">
+    <meta property="og:description" content="Organize your tasks with style and efficiency">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://taskflow.app">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'slide-in': 'slideIn 0.3s ease-out',
+                        'slide-out': 'slideOut 0.3s ease-in',
+                        'bounce-in': 'bounceIn 0.6s ease-out',
+                        'fade-in-up': 'fadeInUp 0.4s ease-out',
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="font-sans antialiased bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mx-auto mb-4"></div>
+            <h2 class="text-xl font-semibold text-gray-900">Loading TaskFlow...</h2>
+            <p class="text-gray-500 mt-2">Preparing your workspace</p>
+        </div>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="app" class="opacity-0 transition-opacity duration-500">
+        <!-- Content will be dynamically inserted here by app.js -->
+    </div>
+
+    <!-- Service Worker Registration (for future PWA support) -->
+    <script>
+        // Remove loading screen once page is loaded
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const app = document.getElementById('app');
+            
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                app.classList.remove('opacity-0');
+                
+                setTimeout(() => {
+                    loadingScreen.remove();
+                }, 300);
+            }, 800);
+        });
+
+        // Simple error handling for script loading
+        window.addEventListener('error', (e) => {
+            console.error('Script loading error:', e);
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.innerHTML = `
+                    <div class="text-center">
+                        <div class="text-red-500 text-6xl mb-4">⚠️</div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">Failed to Load</h2>
+                        <p class="text-gray-500 mb-4">Please check your internet connection and try again.</p>
+                        <button onclick="location.reload()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Retry
+                        </button>
+                    </div>
+                `;
+            }
+        });
+    </script>
+
+    <!-- Main Application Script -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
